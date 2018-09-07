@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />-->
+    <script src="angular.js"></script>
+    <script src="main.js"></script>
+    <script src="calculate.js"></script> 
+</head>
+<body ng-app="app" ng-controller="main">
+    <div ng-repeat="field in fields track by $index">
+    <input type="date" ng-model="date"> {{day[date.getDay()]}}  Start Time: <input type="text" ng-model="startTime"> End Time: <input type="text" ng-model="EndTime"> Utilization: <input max=100 type="number" ng-model="utilization" ng-init="utilization=100"> {{field.time=(calculate.diffTime(startTime,EndTime))*utilization/100}} <button ng-click="fields.push({time:0})">+</button>
+    </div>
+    Total Laytime: {{getTotal().days +"days "+ getTotal().hrs +"hrs " +getTotal().mnts +" minutes"}}
+</body>
+</html>
