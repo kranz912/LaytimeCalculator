@@ -1,10 +1,36 @@
+
+Date.prototype.toDateInputValue = (function() {
+    var local = new Date(this);
+    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+    return local.toJSON().slice(0,10);
+});
+
+
+Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+}
+
+  $(document).ready(function(){
+        $('.clockpicker').clockpicker(
+            {
+                donetext: 'Done'
+            }
+        );
+  });
+
+
+//angular
 (function(){
     angular.module('app',[])
         .controller('main',mainCtrl);
     
     mainCtrl.$inject =["$scope"];
     function mainCtrl($scope){
-        $scope.fields = [{}];
+        $scope.fields = [{
+            date: new Date()
+        }];
         $scope.calculate = calculate;
         $scope.total =0
         $scope.day=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];

@@ -5,15 +5,58 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />-->
-    <script src="angular.js"></script>
-    <script src="main.js"></script>
-    <script src="calculate.js"></script> 
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/node_modules/clockpicker/bootstrap-clockpicker.min.css">
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/node_modules/clockpicker/bootstrap-clockpicker.min.js"></script>
+
+    <script src="/lib/js/angular.js"></script>
+    <script src="/scripts/main.js"></script>
+    <script src="/scripts/calculate.js"></script> 
 </head>
 <body ng-app="app" ng-controller="main">
-    <div ng-repeat="field in fields track by $index">
-    <input type="date" ng-model="date"> {{day[date.getDay()]}}  Start Time: <input type="text" ng-model="startTime"> End Time: <input type="text" ng-model="EndTime"> Utilization: <input max=100 type="number" ng-model="utilization" ng-init="utilization=100"> {{field.time=(calculate.diffTime(startTime,EndTime))*utilization/100}} <button ng-click="fields.push({time:0})">+</button>
+    <div class="container">
+    
+        <form class="form-inline">
+                <div class="row" ng-repeat="field in fields track by $index" >
+
+                        <div class="input-group date" data-provide="datepicker">
+                            
+                                <input type="date" class="form-control" ng-model="field.date">
+                                <div class="input-group-addon">
+                                    <span class="glyphicon glyphicon-th"></span>
+                                </div>
+                          
+                        </div>
+                            {{day[field.date.getDay()]}}  
+                        <div class="input-group clockpicker">
+                                <span class="input-group-addon">
+                                        Start  <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            <input class="form-control" ng-model="field.StartTime"  type="text"> 
+                        </div>
+                            
+                        <div class="input-group clockpicker">
+                                <span class="input-group-addon">
+                                        End  <span class="glyphicon glyphicon-time"></span>
+                                </span>
+                            <input class="form-control" ng-min="field.StartTime" ng-model="field.EndTime"  type="text"> 
+                
+                        </div>
+                    
+                        
+                        Utilization: <input min="0" max=100 type="number" ng-model="utilization" class="form-control" ng-init="utilization=100"> 
+                        {{field.time=(calculate.diffTime(field.StartTime,field.EndTime))*utilization/100}} 
+                        <button ng-click="fields.push({date:field.date.addDays(1),time:0})">+</button>
+                    </div>
+        </form>
+
+        Total Laytime: {{getTotal().days +"days "+ getTotal().hrs +"hrs " +getTotal().mnts +" minutes"}}
+         
     </div>
-    Total Laytime: {{getTotal().days +"days "+ getTotal().hrs +"hrs " +getTotal().mnts +" minutes"}}
 </body>
 </html>
